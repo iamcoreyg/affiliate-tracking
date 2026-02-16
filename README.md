@@ -18,7 +18,7 @@ Set these in your main app's `.env`:
 | `AFFILIATES_APP_URL` | Yes | URL of the affiliates app (e.g. `http://localhost:3001`) |
 | `AFFILIATES_API_KEY` | Yes | Raw API key from affiliates admin → Settings → API Keys |
 | `AFFILIATES_WEBHOOK_SECRET` | Yes | Raw secret from affiliates admin → Settings → Inbound Webhooks |
-| `AFFILIATES_COOKIE_DOMAIN` | Optional | Cookie domain for the tracking cookie |
+| `AFFILIATES_COOKIE_DOMAIN` | No | Override cookie domain (auto-derived from request host — strips `www.`) |
 
 The gem's Railtie auto-configures from these env vars — no initializer file needed.
 

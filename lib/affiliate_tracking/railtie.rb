@@ -7,7 +7,7 @@ module AffiliateTracking
         config.api_url = ENV["AFFILIATES_APP_URL"]
         config.api_key = ENV["AFFILIATES_API_KEY"]
         config.webhook_secret = ENV["AFFILIATES_WEBHOOK_SECRET"]
-        config.cookie_domain = ENV["AFFILIATES_COOKIE_DOMAIN"]
+        config.cookie_domain = ENV["AFFILIATES_COOKIE_DOMAIN"] # optional override; derived from request host if not set
       end
     end
 
