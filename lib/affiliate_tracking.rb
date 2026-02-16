@@ -90,13 +90,21 @@ module AffiliateTracking
     # @param data_json [String] JSON string of the Stripe data object
     # @return [Boolean] true if forwarding succeeded
     def forward_event(event_type, data_json)
-      return false if configuration.api_url.nil? || configuration.api_url.empty?
-      return false if configuration.webhook_secret.nil? || configuration.webhook_secret.empty?
+      if configuration.api_url.nil? || configuration.api_url.empty?
+        Rails.logger.warn "[AffiliateTracking] Cannot forward #{event_type}: api_url not configured (set AFFILIATES_URL)" if defined?(Rails)
+        return false
+      end
+      if configuration.webhook_secret.nil? || configuration.webhook_secret.empty?
+        Rails.logger.warn "[AffiliateTracking] Cannot forward #{event_type}: webhook_secret not configured (set AFFILIATES_WEBHOOK_SECRET)" if defined?(Rails)
+        return false
+      end
 
       payload = { event_type: event_type, data: JSON.parse(data_json) }.to_json
       signature = OpenSSL::HMAC.hexdigest("SHA256", configuration.webhook_secret, payload)
 
       uri = URI.parse("#{configuration.api_url.chomp("/")}/api/v1/events")
+      Rails.logger.info "[AffiliateTracking] POSTing #{event_type} to #{uri}" if defined?(Rails)
+
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = (uri.scheme == "https")
       http.open_timeout = 10
@@ -108,6 +116,9 @@ module AffiliateTracking
       request.body = payload
 
       response = http.request(request)
+      unless response.is_a?(Net::HTTPSuccess)
+        Rails.logger.error "[AffiliateTracking] #{event_type} forward failed: HTTP #{response.code} - #{response.body&.truncate(200)}" if defined?(Rails)
+      end
       response.is_a?(Net::HTTPSuccess)
     end
 
