@@ -8,7 +8,7 @@ module AffiliateTracking
       if result
         logger.info "[AffiliateTracking] Successfully forwarded #{event_type}"
       else
-        logger.warn "[AffiliateTracking] Failed to forward #{event_type} — check AFFILIATES_URL and AFFILIATES_WEBHOOK_SECRET"
+        logger.warn "[AffiliateTracking] Failed to forward #{event_type} — check AFFILIATES_APP_URL and AFFILIATES_WEBHOOK_SECRET"
       end
       result
     end

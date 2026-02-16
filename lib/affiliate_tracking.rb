@@ -91,7 +91,7 @@ module AffiliateTracking
     # @return [Boolean] true if forwarding succeeded
     def forward_event(event_type, data_json)
       if configuration.api_url.nil? || configuration.api_url.empty?
-        Rails.logger.warn "[AffiliateTracking] Cannot forward #{event_type}: api_url not configured (set AFFILIATES_URL)" if defined?(Rails)
+        Rails.logger.warn "[AffiliateTracking] Cannot forward #{event_type}: api_url not configured (set AFFILIATES_APP_URL)" if defined?(Rails)
         return false
       end
       if configuration.webhook_secret.nil? || configuration.webhook_secret.empty?
