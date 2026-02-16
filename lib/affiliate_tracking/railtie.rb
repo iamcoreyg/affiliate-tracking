@@ -1,3 +1,5 @@
+require_relative "engine"
+
 module AffiliateTracking
   class Railtie < Rails::Railtie
     initializer "affiliate_tracking.configure" do
@@ -11,6 +13,12 @@ module AffiliateTracking
 
     initializer "affiliate_tracking.view_helpers" do
       ActionView::Base.include AffiliateTracking::ViewHelpers
+    end
+
+    initializer "affiliate_tracking.routes", after: :add_routing_paths do |app|
+      app.routes.append do
+        mount AffiliateTracking::Engine, at: "/affiliate-tracking"
+      end
     end
   end
 end
