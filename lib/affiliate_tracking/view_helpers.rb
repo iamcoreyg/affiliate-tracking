@@ -9,7 +9,7 @@ module AffiliateTracking
 
       raw <<~HTML
         <script src="#{base_url}/sdk/v1/affiliate-tracking.js"></script>
-        <script>AffiliateTracking.init({#{domain_param} apiUrl: "#{base_url}" });</script>
+        <script>if (typeof AffiliateTracking !== "undefined") { AffiliateTracking.init({#{domain_param} apiUrl: "#{base_url}" }); }</script>
       HTML
     end
 
